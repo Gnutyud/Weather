@@ -15,12 +15,23 @@ body {
 
 .container {
     width: 350px;
-    height: auto;
+    height: 100vh;
+    overflow: auto;
     border: 1px solid #f1f1f1;
     margin: 0 auto;
     background-image: url(icons/background.jpg);
     background-size: cover;
-    /* background-color: rgba(0, 0, 0, 0.2); */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+
+.container::-webkit-scrollbar {
+    display: none;
 }
 
 header .nav_bar {
