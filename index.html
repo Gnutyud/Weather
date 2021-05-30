@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Weather App</title>
+</head>
+
+<body>
+    <div class="container">
+        <!-- header -->
+        <header>
+            <div class="nav_bar">
+                <div class="nav_left">
+                    <i class="fa fa-signal" aria-hidden="true"> Viettel</i>
+                    <i class="fa fa-wifi" aria-hidden="true"></i>
+                </div>
+                <div id="nav_time"></div>
+                <div class="nav_right">
+                    <span>100%</span>
+                    <i class="fa fa-battery-full" aria-hidden="true"></i>
+                </div>
+            </div>
+        </header>
+        <!-- Content -->
+        <div class="content">
+            <!-- content current -->
+            <div class="content_current">
+                <div id="notification"></div>
+                <h2 class="location_city"></h2>
+                <h3 class="weather_desc"></h3>
+                <img id="current_icon" src="icons/unknown.png" />
+                <h1 class="current_temp"></h1>
+                <!-- <p class="low_high">
+                    <span>H:37&#176</span>
+                    <span>L:27&#176</span>
+                </p> -->
+            </div>
+            <!-- content hourly -->
+            <div class="content_hourly">
+                <!-- <div class="hourly-item">
+                <p class="title">Now</p>
+                <img src="icons/01d.png">
+                <p class="hourly_temp">36&#176</p>
+            </div> -->
+            </div>
+            <!-- content daily -->
+            <div class="content_daily">
+                <!-- <div class="daily-item">
+                    <p class="title">Today</p>
+                    <img src="icons/01d.png">
+                    <p class="low_high">
+                        <span>H:37&#176</span>
+                        <span>L:27&#176</span>
+                    </p>
+                </div> -->
+            </div>
+        </div>
+    </div>
+    <!-- Javascript -->
+    <script src="app.js"></script>
+</body>
+
+</html>
