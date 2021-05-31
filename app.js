@@ -4,6 +4,8 @@ const weather = {
     temp: "",
     description: "",
     icon: "",
+    sunrise: "",
+    sunset: "",
   },
   hourly: [
     {
@@ -104,7 +106,9 @@ const weather_desc = document.getElementsByClassName("weather_desc")[0];
 const current_icon = document.getElementById("current_icon");
 const current_temp = document.getElementsByClassName("current_temp")[0];
 const content_hourly = document.getElementsByClassName("content_hourly")[0];
-var content_daily = document.getElementsByClassName("content_daily")[0];
+const content_daily = document.getElementsByClassName("content_daily")[0];
+const current_sunrise = document.getElementById("sunrise");
+const current_sunset = document.getElementById("sunset");
 setInterval(() => {
   let dayOrNight = "AM";
   let d = new Date();
@@ -139,18 +143,28 @@ function showPosition(position) {
 }
 function showError(error) {
   notification.innerHTML = ` <p>${error.message}</p> `;
+  document.getElementsByClassName("content_hourly")[0].style.border = "none";
+  // document.getElementsByClassName("content")[0].style.background-color = "transparent";
 }
 // Call API
 const key = "0e1684e64e0188293e167670f42a897e";
-function getWeather(lat, lon) {
+async function getWeather(lat, lon) {
   let url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${key}`;
-  fetch(url)
+  console.log(url);
+  await fetch(url)
     .then((response) => response.json())
     .then(function (data) {
+      // current
       weather.current.location = data.timezone;
       weather.current.temp = Math.floor(data.current.temp - 273);
       weather.current.description = data.current.weather[0].description;
       weather.current.icon = data.current.weather[0].icon;
+      weather.current.sunrise = new Date(data.current.sunrise * 1000)
+        .toTimeString()
+        .substr(0, 5);
+      weather.current.sunset = new Date(data.current.sunset * 1000)
+        .toTimeString()
+        .substr(0, 5);
       // hourly
       for (let i = 0; i < weather.hourly.length; i++) {
         // unix time so need to times 1000 to milliseconds
@@ -177,6 +191,8 @@ function getWeather(lat, lon) {
       weather_desc.innerHTML = weather.current.description;
       current_temp.innerHTML = weather.current.temp + "&#176";
       current_icon.setAttribute("src", `icons/${weather.current.icon}.png`);
+      current_sunrise.innerHTML = `Sunrise at ${weather.current.sunrise}`;
+      current_sunset.innerHTML = `Sunset at ${weather.current.sunset}`;
       // For hourly section
 
       let hourly_html = "";
