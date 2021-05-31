@@ -36,6 +36,16 @@ const weather = {
       icon: "",
       temp: "",
     },
+    {
+      hour: "",
+      icon: "",
+      temp: "",
+    },
+    {
+      hour: "",
+      icon: "",
+      temp: "",
+    },
   ],
   daily: [
     {
@@ -151,7 +161,7 @@ function getWeather(lat, lon) {
         weather.hourly[i].temp = Math.floor(data.hourly[i].temp - 273);
       }
       // Daily
-      for (let i = 0; i < 8; i++) {
+      for (let i = 0; i < weather.daily.length; i++) {
         // unix time so need to times 1000 to milliseconds
         weather.daily[i].date = new Date(data.daily[i].dt * 1000)
           .toDateString()
