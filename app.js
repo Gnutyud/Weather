@@ -144,13 +144,13 @@ function showPosition(position) {
 function showError(error) {
   notification.innerHTML = ` <p>${error.message}</p> `;
   document.getElementsByClassName("content_hourly")[0].style.border = "none";
-  // document.getElementsByClassName("content")[0].style.background-color = "transparent";
+  document.getElementsByClassName("content")[0].style.backgroundColor =
+    "transparent";
 }
 // Call API
 const key = "0e1684e64e0188293e167670f42a897e";
 async function getWeather(lat, lon) {
   let url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${key}`;
-  console.log(url);
   await fetch(url)
     .then((response) => response.json())
     .then(function (data) {

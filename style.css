@@ -11,13 +11,13 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
     font-weight: normal;
     color: #ffffff;
-    background-image: url(icons/background.jpg);
+    background-image: url(icons/bg.jpg);
     background-size: cover;
 }
 
 .container {
     max-width: 100%;
-    height: auto;
+    height: 100vh;
     overflow: auto;
     border: 1px solid #f1f1f1;
     margin: 0 auto;
@@ -86,7 +86,10 @@ header .nav_bar {
 .low_high span {
     font-size: 16px;
     font-weight: 400;
-    margin-right: 30px;
+}
+
+.low_high span:last-child {
+    margin-left: 15px;
 }
 
 .low_high span img {
@@ -127,17 +130,19 @@ header .nav_bar {
 }
 
 .daily-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    text-align: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    /* align-items: start; */
 }
 
-.daily-item p,
-.daily-item img {
+.daily-item p {
     align-self: center;
 }
 
+.daily-item .low_high {
+    justify-self: end;
+}
+
 .daily-item img {
-    margin: 0 auto;
+    justify-self: center;
 }
