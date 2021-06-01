@@ -50,9 +50,10 @@ header .nav_bar {
 
 /* content */
 
-.content {
+
+/* .content {
     background-color: rgba(0, 0, 0, 0.2);
-}
+} */
 
 #notification p {
     background-color: palevioletred;
