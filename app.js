@@ -151,65 +151,66 @@ function showError(error) {
 const key = "0e1684e64e0188293e167670f42a897e";
 async function getWeather(lat, lon) {
   let url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${key}`;
-  await fetch(url)
-    .then((response) => response.json())
-    .then(function (data) {
-      // current
-      weather.current.location = data.timezone;
-      weather.current.temp = Math.floor(data.current.temp - 273);
-      weather.current.description = data.current.weather[0].description;
-      weather.current.icon = data.current.weather[0].icon;
-      weather.current.sunrise = new Date(data.current.sunrise * 1000)
-        .toTimeString()
-        .substr(0, 5);
-      weather.current.sunset = new Date(data.current.sunset * 1000)
-        .toTimeString()
-        .substr(0, 5);
-      // hourly
-      for (let i = 0; i < weather.hourly.length; i++) {
-        // unix time so need to times 1000 to milliseconds
-        weather.hourly[i].hour = (
-          "0" + new Date(data.hourly[i].dt * 1000).getHours()
-        ).substr(-2);
-        weather.hourly[i].icon = data.hourly[i].weather[0].icon;
-        weather.hourly[i].temp = Math.floor(data.hourly[i].temp - 273);
-      }
-      // Daily
-      for (let i = 0; i < weather.daily.length; i++) {
-        // unix time so need to times 1000 to milliseconds
-        weather.daily[i].date = new Date(data.daily[i].dt * 1000)
-          .toDateString()
-          .substr(0, 4);
-        weather.daily[i].icon = data.daily[i].weather[0].icon;
-        weather.daily[i].temp_hight = Math.floor(data.daily[i].temp.max - 273);
-        weather.daily[i].temp_low = Math.floor(data.daily[i].temp.min - 273);
-      }
-      // console.log(weather.daily);
-    })
-    .then(function displayWeather() {
-      location_city.innerHTML = weather.current.location;
-      weather_desc.innerHTML = weather.current.description;
-      current_temp.innerHTML = weather.current.temp + "&#176";
-      current_icon.setAttribute("src", `icons/${weather.current.icon}.png`);
-      current_sunrise.innerHTML = `Sunrise at ${weather.current.sunrise}`;
-      current_sunset.innerHTML = `Sunset at ${weather.current.sunset}`;
-      // For hourly section
+  let locationUrl = `https://geocode.xyz/${lat},${lon}?json=1`;
+  const [data, otherLocation] = await Promise.all([
+    fetch(url).then((res) => res.json()),
+    fetch(locationUrl).then((res) => res.json()),
+  ]);
+  // current
+  weather.current.location = otherLocation.region + "," + otherLocation.prov;
+  weather.current.temp = Math.floor(data.current.temp - 273);
+  weather.current.description = data.current.weather[0].description;
+  weather.current.icon = data.current.weather[0].icon;
+  weather.current.sunrise = new Date(data.current.sunrise * 1000)
+    .toTimeString()
+    .substr(0, 5);
+  weather.current.sunset = new Date(data.current.sunset * 1000)
+    .toTimeString()
+    .substr(0, 5);
+  // hourly
+  for (let i = 0; i < weather.hourly.length; i++) {
+    // unix time so need to times 1000 to milliseconds
+    weather.hourly[i].hour = (
+      "0" + new Date(data.hourly[i].dt * 1000).getHours()
+    ).substr(-2);
+    weather.hourly[i].icon = data.hourly[i].weather[0].icon;
+    weather.hourly[i].temp = Math.floor(data.hourly[i].temp - 273);
+  }
+  // Daily
+  for (let i = 0; i < weather.daily.length; i++) {
+    // unix time so need to times 1000 to milliseconds
+    weather.daily[i].date = new Date(data.daily[i].dt * 1000)
+      .toDateString()
+      .substr(0, 4);
+    weather.daily[i].icon = data.daily[i].weather[0].icon;
+    weather.daily[i].temp_hight = Math.floor(data.daily[i].temp.max - 273);
+    weather.daily[i].temp_low = Math.floor(data.daily[i].temp.min - 273);
+  }
+  // console.log(weather.daily);
+  function displayWeather() {
+    location_city.innerHTML = weather.current.location;
+    weather_desc.innerHTML = weather.current.description;
+    current_temp.innerHTML = weather.current.temp + "&#176";
+    current_icon.setAttribute("src", `icons/${weather.current.icon}.png`);
+    current_sunrise.innerHTML = `Sunrise at ${weather.current.sunrise}`;
+    current_sunset.innerHTML = `Sunset at ${weather.current.sunset}`;
+    // For hourly section
 
-      let hourly_html = "";
-      weather.hourly.forEach(function (hourly) {
-        hourly_html += `
+    let hourly_html = "";
+    weather.hourly.forEach(function (hourly) {
+      hourly_html += `
         <div class="hourly-item">
                     <p class="title">${hourly.hour}</p>
                     <img src="icons/${hourly.icon}.png">
                     <p class="hourly_temp">${hourly.temp}&#176</p>
                 </div>`;
-        content_hourly.innerHTML = hourly_html;
-      });
-      // For daily section
-      let daily_html = "";
-      // weather.daily.forEach((day) => console.log(day));
-      for (let i = 0; i < weather.daily.length; i++) {
-        daily_html += `
+      content_hourly.innerHTML = hourly_html;
+    });
+    // For daily section
+    let daily_html = "";
+    // weather.daily.forEach((day) => console.log(day));
+    for (let i = 0; i < weather.daily.length; i++) {
+      daily_html += `
                 <div class="daily-item">
                     <p class="title">${weather.daily[i].date}</p>
                     <img src="icons/${weather.daily[i].icon}.png">
@@ -218,7 +219,8 @@ async function getWeather(lat, lon) {
                         <span>L:${weather.daily[i].temp_low}&#176</span>
                     </p>
                 </div>`;
-        content_daily.innerHTML = daily_html;
-      }
-    });
+      content_daily.innerHTML = daily_html;
+    }
+  }
+  displayWeather();
 }
